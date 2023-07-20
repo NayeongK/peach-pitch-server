@@ -26,21 +26,6 @@ async function getAllPresentations(req, res) {
   }
 }
 
-// async function createPresentation(req, res, next) {
-//   // create
-// }
-
-// async function savePresentation(req, res, next) {
-//   // save
-// }
-
-// async function deletePresentation(req, res, next) {
-//   // delete
-// }
-
 module.exports = {
   getAllPresentations,
-  //   createPresentation,
-  //   savePresentation,
-  //   deletePresentation,
 };
