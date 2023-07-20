@@ -6,11 +6,6 @@ async function getAllPresentations(req, res) {
   try {
     const allPresentations = await Presentation.find({
       userId: user_id,
-    }).populate({
-      path: "slides",
-      populate: {
-        path: "objects",
-      },
     });
 
     if (!allPresentations) {
