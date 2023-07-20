@@ -1,8 +1,11 @@
 const createError = require("http-errors");
 const express = require("express");
+const logger = require("morgan");
 const mongoose = require("mongoose");
 
-const indexRouter = require("./routes/index");
+const login = require("./routes/login");
+const presentation = require("./routes/presentation");
+const slide = require("./routes/slide");
 
 const app = express();
 mongoose.connect(process.env.DB_URI);
@@ -10,7 +13,11 @@ mongoose.connect(process.env.DB_URI);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/", indexRouter);
+app.use(logger("dev"));
+
+app.use("/login", login);
+app.use("/users/:user_id/presentations", presentation);
+app.use("/users/:user_id/presentations/:presentation_id/slides", slide);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
