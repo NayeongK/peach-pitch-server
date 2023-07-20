@@ -1,20 +1,16 @@
 const router = require("express").Router();
+const {
+  getAllPresentations,
+  createPresentation,
+  savePresentation,
+  deletePresentation,
+} = require("../controllers/presentationController");
 
-router.route("/")
-  // .get((req, res, next) => {
+router.route("/").get(getAllPresentations).post(createPresentation);
 
-  // })
-  // .post((req, res, next) => {
-
-  // });
-
-router.route("/:presentation_id")
-  // .put((req, res, next) => {
-
-  // })
-  // .delete((req, res, next) => {
-
-  // });
-
+router
+  .route("/:presentation_id")
+  .put(savePresentation)
+  .delete(deletePresentation);
 
 module.exports = router;
