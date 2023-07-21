@@ -3,13 +3,14 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
-const app = express();
-mongoose.connect(process.env.DB_URI);
+require("dotenv").config();
 
 const login = require("./routes/loginRoutes");
 const presentation = require("./routes/presentationRoutes");
 const slide = require("./routes/slideRoutes");
+
+const app = express();
+mongoose.connect(process.env.MONGODB_URI);
 
 const corsOptions = {
   origin: "http://localhost:5173",
