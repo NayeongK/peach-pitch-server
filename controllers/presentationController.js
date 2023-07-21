@@ -11,7 +11,7 @@ async function getAllPresentations(req, res) {
     if (!allPresentations) {
       res
         .status(404)
-        .send({ result: "error", error: "Presentations not found" });
+        .send({ message: "No presentations found created by the user" });
       return;
     }
 
@@ -21,21 +21,37 @@ async function getAllPresentations(req, res) {
   }
 }
 
-// async function createPresentation(req, res, next) {
-//   // create
-// }
+async function createPresentation(req, res) {
+  const { title } = req.body;
 
-// async function savePresentation(req, res, next) {
-//   // save
-// }
+  try {
+    const newPresentation = await Presentation.create(title);
 
-// async function deletePresentation(req, res, next) {
-//   // delete
-// }
+    res.status(201).json(newPresentation);
+  } catch (err) {
+    res.status(500).send({ result: "error", error: "Internal Server Error" });
+  }
+}
+
+async function deletePresentation(req, res) {
+  const { id } = req.params;
+
+  try {
+    const deletedPresentation = await Presentation.findByIdAndDelete(id);
+
+    if (!deletedPresentation) {
+      res.status(404).send({ message: "No presentation found to delete" });
+      return;
+    }
+
+    res.status(200).send({ message: "Presentation successfully deleted" });
+  } catch (err) {
+    res.status(500).send({ result: "error", error: "Internal Server Error" });
+  }
+}
 
 module.exports = {
   getAllPresentations,
-  //   createPresentation,
-  //   savePresentation,
-  //   deletePresentation,
+  createPresentation,
+  deletePresentation,
 };
