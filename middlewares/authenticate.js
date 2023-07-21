@@ -2,7 +2,7 @@ const firebaseAdmin = require("../configs/firebase");
 const User = require("../models/User");
 
 exports.authenticate = async (req, res, next) => {
-  const token = req.headers.Authorization.split(" ")[1];
+  const token = req.headers.authorization.split(" ")[1];
   const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
   let user = await User.findOne({ email: decodedToken.email });
 
@@ -14,8 +14,8 @@ exports.authenticate = async (req, res, next) => {
     if (!user) {
       user = new User({
         email: decodedToken.email,
-        displayName: decodedToken.displayName,
-        photoUrl: decodedToken.photoUrl,
+        name: decodedToken.name,
+        picture: decodedToken.picture,
       });
 
       await user.save();
