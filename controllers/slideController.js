@@ -6,10 +6,19 @@ async function getAllSlides(req, res) {
 
   try {
     const presentation = await Presentation.findById(presentation_id);
+
+    if (!presentation) {
+      res.status(404).json({ message: "Presentation not found" });
+      return;
+    }
+
     const allSlides = presentation.slides;
 
-    if (!allSlides) {
-      res.status(404).json({ message: "No slides found created by the user" });
+    if (allSlides.length === 0) {
+      res.status(200).json({
+        message: "No slides found",
+        slides: [],
+      });
       return;
     }
 
