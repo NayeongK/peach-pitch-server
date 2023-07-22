@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Presentation = require("../models/Presentation");
 
 async function getAllPresentations(req, res) {
@@ -7,7 +8,7 @@ async function getAllPresentations(req, res) {
     const allPresentations = await Presentation.find({ userId: user_id });
 
     if (allPresentations.length === 0) {
-      res.status(200).json({
+      return res.status(200).json({
         result: "success",
         message: "No presentations found created by the user",
         presentations: [],
@@ -22,9 +23,19 @@ async function getAllPresentations(req, res) {
 
 async function createPresentation(req, res) {
   const { title } = req.body;
+  const { user_id } = req.params;
+  const newSlide = {
+    slideId: new mongoose.Types.ObjectId(),
+    objects: [],
+    animationSeq: [],
+  };
 
   try {
-    const newPresentation = await Presentation.create(title);
+    const newPresentation = await Presentation.create({
+      title,
+      userId: user_id,
+      slides: [newSlide],
+    });
 
     res.status(201).json({ result: "success", presentation: newPresentation });
   } catch (err) {
@@ -39,7 +50,7 @@ async function deletePresentation(req, res) {
     const deletedPresentation = await Presentation.findByIdAndDelete(id);
 
     if (!deletedPresentation) {
-      res
+      return res
         .status(404)
         .json({ result: "error", message: "No presentation found to delete" });
     }
@@ -61,7 +72,7 @@ async function savePresentation(req, res) {
     let presentation = await Presentation.findById(id);
 
     if (!presentation) {
-      res
+      return res
         .status(404)
         .json({ result: "error", message: "No presentation found to save" });
     }

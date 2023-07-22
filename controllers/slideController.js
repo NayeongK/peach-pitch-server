@@ -8,13 +8,13 @@ async function getAllSlides(req, res, next) {
     const presentation = await Presentation.findById(presentation_id);
 
     if (!presentation) {
-      res.status(404).json({ message: "Presentation not found" });
+      return res.status(404).json({ message: "Presentation not found" });
     }
 
     const allSlides = presentation.slides;
 
     if (allSlides.length === 0) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "No slides found",
         slides: [],
       });
@@ -34,7 +34,7 @@ async function getSlide(req, res, next) {
     const slide = presentation.slides.id(slide_id);
 
     if (!slide) {
-      res.status(404).json({ message: "Slide not found" });
+      return res.status(404).json({ message: "Slide not found" });
     }
 
     res.json({ result: "success", slide });
@@ -71,7 +71,7 @@ async function deleteSlide(req, res, next) {
     const slide = presentation.slides.id(slide_id);
 
     if (!slide) {
-      res.status(404).json({ message: "No slide found to delete" });
+      return res.status(404).json({ message: "No slide found to delete" });
     }
 
     slide.remove();
