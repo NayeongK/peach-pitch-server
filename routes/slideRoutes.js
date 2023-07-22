@@ -1,7 +1,15 @@
-const router = require("express").Router();
+const express = require("express");
 
-router.route("/");
+const router = express.Router({ mergeParams: true });
+const {
+  getAllSlides,
+  createSlide,
+  getSlide,
+  deleteSlide,
+} = require("../controllers/slideController");
 
-router.route("/:slide_id");
+router.route("/").get(getAllSlides).post(createSlide);
+
+router.route("/:slide_id").get(getSlide).delete(deleteSlide);
 
 module.exports = router;
