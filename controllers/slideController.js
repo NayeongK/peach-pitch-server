@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Presentation = require("../models/Presentation");
 
-async function getAllSlides(req, res) {
+async function getAllSlides(req, res, next) {
   const { presentation_id } = req.params;
 
   try {
@@ -9,7 +9,6 @@ async function getAllSlides(req, res) {
 
     if (!presentation) {
       res.status(404).json({ message: "Presentation not found" });
-      return;
     }
 
     const allSlides = presentation.slides;
@@ -19,16 +18,15 @@ async function getAllSlides(req, res) {
         message: "No slides found",
         slides: [],
       });
-      return;
     }
 
-    res.json(allSlides);
+    res.json({ result: "success", slides: allSlides });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 
-async function getSlide(req, res) {
+async function getSlide(req, res, next) {
   const { presentation_id, slide_id } = req.params;
 
   try {
@@ -37,16 +35,15 @@ async function getSlide(req, res) {
 
     if (!slide) {
       res.status(404).json({ message: "Slide not found" });
-      return;
     }
 
-    res.json(slide);
+    res.json({ result: "success", slide });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 
-async function createSlide(req, res) {
+async function createSlide(req, res, next) {
   const { presentation_id } = req.params;
 
   try {
@@ -56,17 +53,17 @@ async function createSlide(req, res) {
       objects: [],
       animationSeq: [],
     };
-    presentation.slides.push(newSlide);
 
+    presentation.slides.push(newSlide);
     await presentation.save();
 
-    res.status(201).json(newSlide);
+    res.status(201).json({ result: "success", slide: newSlide });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 
-async function deleteSlide(req, res) {
+async function deleteSlide(req, res, next) {
   const { presentation_id, slide_id } = req.params;
 
   try {
@@ -75,7 +72,6 @@ async function deleteSlide(req, res) {
 
     if (!slide) {
       res.status(404).json({ message: "No slide found to delete" });
-      return;
     }
 
     slide.remove();
@@ -83,7 +79,7 @@ async function deleteSlide(req, res) {
 
     res.status(200).json({ message: "Slide successfully deleted" });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 

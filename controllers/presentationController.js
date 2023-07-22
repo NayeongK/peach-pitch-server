@@ -4,19 +4,17 @@ async function getAllPresentations(req, res) {
   const { user_id } = req.params;
 
   try {
-    const allPresentations = await Presentation.find({
-      userId: user_id,
-    });
+    const allPresentations = await Presentation.find({ userId: user_id });
 
     if (allPresentations.length === 0) {
       res.status(200).json({
+        result: "success",
         message: "No presentations found created by the user",
         presentations: [],
       });
-      return;
     }
 
-    res.json(allPresentations);
+    res.json({ result: "success", presentations: allPresentations });
   } catch (err) {
     res.status(500).json({ result: "error", error: "Internal Server Error" });
   }
@@ -28,7 +26,7 @@ async function createPresentation(req, res) {
   try {
     const newPresentation = await Presentation.create(title);
 
-    res.status(201).json(newPresentation);
+    res.status(201).json({ result: "success", presentation: newPresentation });
   } catch (err) {
     res.status(500).json({ result: "error", error: "Internal Server Error" });
   }
@@ -41,11 +39,15 @@ async function deletePresentation(req, res) {
     const deletedPresentation = await Presentation.findByIdAndDelete(id);
 
     if (!deletedPresentation) {
-      res.status(404).json({ message: "No presentation found to delete" });
-      return;
+      res
+        .status(404)
+        .json({ result: "error", message: "No presentation found to delete" });
     }
 
-    res.status(200).json({ message: "Presentation successfully deleted" });
+    res.status(200).json({
+      result: "success",
+      message: "Presentation successfully deleted",
+    });
   } catch (err) {
     res.status(500).json({ result: "error", error: "Internal Server Error" });
   }
@@ -59,14 +61,19 @@ async function savePresentation(req, res) {
     let presentation = await Presentation.findById(id);
 
     if (!presentation) {
-      res.status(404).json({ message: "No presentation found to save" });
-      return;
+      res
+        .status(404)
+        .json({ result: "error", message: "No presentation found to save" });
     }
+
     await Presentation.findByIdAndUpdate(id, updates);
     presentation = await Presentation.findById(id);
-    res
-      .status(200)
-      .json({ message: "Presentation successfully saved", presentation });
+
+    res.status(200).json({
+      result: "success",
+      message: "Presentation successfully saved",
+      presentation,
+    });
   } catch (err) {
     res.status(500).json({ result: "error", error: "Internal Server Error" });
   }

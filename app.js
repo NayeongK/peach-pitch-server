@@ -32,11 +32,18 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  const isDevEnv = req.app.get("env") === "development";
 
-  res.status(err.status || 500);
-  res.render("error");
+  const errorResponse = {
+    result: "error",
+    error: isDevEnv ? err.message : "Internal Server Error",
+  };
+
+  if (isDevEnv) {
+    errorResponse.stack = err.stack;
+  }
+
+  res.status(err.status || 500).json(errorResponse);
 });
 
 module.exports = app;
