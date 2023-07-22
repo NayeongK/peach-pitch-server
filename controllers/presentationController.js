@@ -8,10 +8,11 @@ async function getAllPresentations(req, res) {
       userId: user_id,
     });
 
-    if (!allPresentations) {
-      res
-        .status(404)
-        .json({ message: "No presentations found created by the user" });
+    if (allPresentations.length === 0) {
+      res.status(200).json({
+        message: "No presentations found created by the user",
+        presentations: [],
+      });
       return;
     }
 
