@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Presentation = require("../models/Presentation");
 
-async function getAllPresentations(req, res) {
+async function getAllPresentations(req, res, next) {
   const { user_id } = req.params;
 
   try {
@@ -17,11 +17,11 @@ async function getAllPresentations(req, res) {
 
     res.json({ result: "success", presentations: allPresentations });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 
-async function createPresentation(req, res) {
+async function createPresentation(req, res, next) {
   const { title } = req.body;
   const { user_id } = req.params;
   const newSlide = {
@@ -39,11 +39,11 @@ async function createPresentation(req, res) {
 
     res.status(201).json({ result: "success", presentation: newPresentation });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 
-async function deletePresentation(req, res) {
+async function deletePresentation(req, res, next) {
   const { id } = req.params;
 
   try {
@@ -60,11 +60,11 @@ async function deletePresentation(req, res) {
       message: "Presentation successfully deleted",
     });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 }
 
-async function savePresentation(req, res) {
+async function savePresentation(req, res, next) {
   const { id } = req.params;
   const updates = req.body;
 
@@ -86,7 +86,7 @@ async function savePresentation(req, res) {
       presentation,
     });
   } catch (err) {
-    res.status(500).json({ result: "error", error: "Internal Server Error" });
+    next(err);
   }
 
 module.exports = {
