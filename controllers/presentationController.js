@@ -88,7 +88,6 @@ async function savePresentation(req, res) {
   } catch (err) {
     res.status(500).json({ result: "error", error: "Internal Server Error" });
   }
-}
 
 module.exports = {
   getAllPresentations,
