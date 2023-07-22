@@ -8,13 +8,16 @@ async function getAllSlides(req, res, next) {
     const presentation = await Presentation.findById(presentation_id);
 
     if (!presentation) {
-      return res.status(404).json({ message: "Presentation not found" });
+      return res
+        .status(404)
+        .json({ result: "error", message: "Presentation not found" });
     }
 
     const allSlides = presentation.slides;
 
     if (allSlides.length === 0) {
       return res.status(200).json({
+        result: "success",
         message: "No slides found",
         slides: [],
       });
@@ -34,7 +37,9 @@ async function getSlide(req, res, next) {
     const slide = presentation.slides.id(slide_id);
 
     if (!slide) {
-      return res.status(404).json({ message: "Slide not found" });
+      return res
+        .status(404)
+        .json({ result: "error", message: "Slide not found" });
     }
 
     res.json({ result: "success", slide });
@@ -71,13 +76,17 @@ async function deleteSlide(req, res, next) {
     const slide = presentation.slides.id(slide_id);
 
     if (!slide) {
-      return res.status(404).json({ message: "No slide found to delete" });
+      return res
+        .status(404)
+        .json({ result: "error", message: "No slide found to delete" });
     }
 
     slide.remove();
     await presentation.save();
 
-    res.status(200).json({ message: "Slide successfully deleted" });
+    res
+      .status(200)
+      .json({ result: "success", message: "Slide successfully deleted" });
   } catch (err) {
     next(err);
   }
