@@ -30,8 +30,8 @@ const ObjectSchema = new mongoose.Schema({
 const CircleSchema = new mongoose.Schema(
   {
     radius: { type: Number, required: true, default: 50 },
-    fillColor: { type: String, default: "white" },
-    borderColor: { type: String, default: "black" },
+    fillColor: { type: String, default: "#FFFFFF" },
+    borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
 );
@@ -44,8 +44,8 @@ const TriangleSchema = new mongoose.Schema(
         y: { type: Number, required: true },
       },
     ],
-    fillColor: { type: String, default: "white" },
-    borderColor: { type: String, default: "black" },
+    fillColor: { type: String, default: "#FFFFFF" },
+    borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
 );
@@ -54,8 +54,8 @@ const RectangleSchema = new mongoose.Schema(
   {
     width: { type: Number, required: true, default: 100 },
     height: { type: Number, required: true, default: 50 },
-    fillColor: { type: String, default: "white" },
-    borderColor: { type: String, default: "black" },
+    fillColor: { type: String, default: "#FFFFFF" },
+    borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
 );
@@ -67,8 +67,8 @@ const TextBoxSchema = new mongoose.Schema(
     textAlign: { type: String, default: "left" },
     fontFamily: { type: String, default: "Arial" },
     fontStyle: { type: String, default: "normal" },
-    innerColor: { type: String, default: "black" },
-    borderColor: { type: String, default: "black" },
+    innerColor: { type: String, default: "#000000" },
+    borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
 );
@@ -76,7 +76,7 @@ const TextBoxSchema = new mongoose.Schema(
 const ImageSchema = new mongoose.Schema(
   {
     imageUrl: { type: String, default: "" },
-    borderColor: { type: String, default: "black" },
+    borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
 );
