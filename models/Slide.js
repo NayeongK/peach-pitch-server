@@ -1,29 +1,10 @@
 const mongoose = require("mongoose");
+const ObjectSchema = require("./Object");
 
 const SlideSchema = new mongoose.Schema({
-  presentationId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Presentation",
-    required: true,
-  },
-  objects: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Object",
-    },
-  ],
-  overlay: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Object",
-    },
-  ],
-  animationSeq: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Object",
-    },
-  ],
+  slideId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  objects: { type: [ObjectSchema], default: [] },
+  animationSeq: { type: [ObjectSchema], default: [] },
 });
 
-module.exports = mongoose.model("Slide", SlideSchema);
+module.exports = SlideSchema;

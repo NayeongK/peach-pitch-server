@@ -1,66 +1,92 @@
 const mongoose = require("mongoose");
 
-const options = { discriminatorKey: "type" };
+const ObjectSchema = new mongoose.Schema({
+  objectId: { type: mongoose.Schema.Types.ObjectId },
+  type: {
+    type: String,
+    enum: ["Circle", "Triangle", "Rectangle", "TextBox", "Image"],
+    required: true,
+  },
+  coordinates: {
+    x: { type: Number, required: true, default: 0 },
+    y: { type: Number, required: true, default: 0 },
+  },
+  dimensions: {
+    height: { type: Number, required: true, default: 100 },
+    width: { type: Number, required: true, default: 100 },
+  },
+  animation: {
+    type: {
+      type: String,
+      enum: ["fade-in", "block-swipe", "3d flip"],
+    },
+  },
+  properties: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {},
+  },
+});
 
-const objectBaseSchema = new mongoose.Schema(
+const CircleSchema = new mongoose.Schema(
   {
-    order: { type: Number, min: 1 },
-    coordinates: {
-      x: { type: Number, required: true },
-      y: { type: Number, required: true },
-    },
-    dimensions: {
-      height: { type: Number, required: true },
-      width: { type: Number, required: true },
-    },
-    animation: {
-      type: {
-        type: String,
-        enum: ["fade-in", "block-swipe", "3d flip"],
+    radius: { type: Number, required: true, default: 50 },
+    fillColor: { type: String, default: "white" },
+    borderColor: { type: String, default: "black" },
+  },
+  { _id: false },
+);
+
+const TriangleSchema = new mongoose.Schema(
+  {
+    vertices: [
+      {
+        x: { type: Number, required: true },
+        y: { type: Number, required: true },
       },
-      order: Number,
-    },
+    ],
+    fillColor: { type: String, default: "white" },
+    borderColor: { type: String, default: "black" },
   },
-  options,
+  { _id: false },
 );
 
-const shapeSchema = new mongoose.Schema(
+const RectangleSchema = new mongoose.Schema(
   {
-    innerColor: String,
-    borderColor: String,
+    width: { type: Number, required: true, default: 100 },
+    height: { type: Number, required: true, default: 50 },
+    fillColor: { type: String, default: "white" },
+    borderColor: { type: String, default: "black" },
   },
-  options,
+  { _id: false },
 );
 
-const imageSchema = new mongoose.Schema(
+const TextBoxSchema = new mongoose.Schema(
   {
-    imageUrl: String,
-    borderColor: String,
+    content: { type: String, default: "New Textbox" },
+    fontSize: { type: Number, default: 14 },
+    textAlign: { type: String, default: "left" },
+    fontFamily: { type: String, default: "Arial" },
+    fontStyle: { type: String, default: "normal" },
+    innerColor: { type: String, default: "black" },
+    borderColor: { type: String, default: "black" },
   },
-  options,
+  { _id: false },
 );
 
-const textBoxSchema = new mongoose.Schema(
+const ImageSchema = new mongoose.Schema(
   {
-    content: String,
-    fontSize: Number,
-    textAlign: String,
-    fontFamily: String,
-    fontStyle: String,
-    innerColor: String,
-    borderColor: String,
+    imageUrl: { type: String, default: "" },
+    borderColor: { type: String, default: "black" },
   },
-  options,
+  { _id: false },
 );
 
-const Object = mongoose.model("Object", objectBaseSchema);
-Object.discriminator("Shape", shapeSchema);
-Object.discriminator("Image", imageSchema);
-Object.discriminator("TextBox", textBoxSchema);
+ObjectSchema.add({
+  Circle: CircleSchema,
+  Triangle: TriangleSchema,
+  Rectangle: RectangleSchema,
+  TextBox: TextBoxSchema,
+  Image: ImageSchema,
+});
 
-module.exports = {
-  Object,
-  shapeSchema,
-  imageSchema,
-  textBoxSchema,
-};
+module.exports = ObjectSchema;

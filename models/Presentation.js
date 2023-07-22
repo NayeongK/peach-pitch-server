@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const SlideSchema = require("./Slide");
 
 const presentationSchema = new mongoose.Schema({
   title: {
@@ -14,12 +15,7 @@ const presentationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  slides: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Slide",
-    },
-  ],
+  slides: { type: [SlideSchema], default: [] },
 });
 
 module.exports = mongoose.model("Presentation", presentationSchema);
