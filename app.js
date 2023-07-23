@@ -37,7 +37,7 @@ const upload = multer({
     s3,
     bucket: "peachpitch",
     key: (req, file, cb) => {
-      cb(null, Date.now().toString()); // use Date.now().toString() as the file name
+      cb(null, Date.now().toString());
     },
   }),
 });

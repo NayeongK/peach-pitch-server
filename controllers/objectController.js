@@ -89,7 +89,11 @@ async function createObject(req, res, next) {
 
     await presentation.save();
 
-    res.status(201).json(defaultObjectProperties);
+    res.json({
+      result: "success",
+      message: "Object successfully created",
+      object: defaultObjectProperties,
+    });
   } catch (err) {
     next(err);
   }
@@ -109,7 +113,11 @@ async function getObject(req, res, next) {
         .json({ result: "error", message: "Object not found" });
     }
 
-    res.json(object);
+    res.json({
+      result: "success",
+      message: "Object successfully retrieved",
+      object,
+    });
   } catch (err) {
     next(err);
   }
@@ -133,9 +141,10 @@ async function deleteObject(req, res, next) {
 
     await presentation.save();
 
-    res
-      .status(200)
-      .json({ result: "success", message: "Object successfully deleted" });
+    res.json({
+      result: "success",
+      message: "Object successfully deleted",
+    });
   } catch (err) {
     next(err);
   }
@@ -160,7 +169,11 @@ async function updateObject(req, res, next) {
 
     await presentation.save();
 
-    res.json(object);
+    res.json({
+      result: "success",
+      message: "Object successfully updated",
+      object,
+    });
   } catch (err) {
     next(err);
   }
