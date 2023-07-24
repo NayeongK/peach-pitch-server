@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const ObjectSchema = new mongoose.Schema({
-  objectId: { type: mongoose.Schema.Types.ObjectId },
   type: {
     type: String,
     enum: ["Circle", "Triangle", "Square", "TextBox", "Image"],
@@ -22,10 +21,9 @@ const ObjectSchema = new mongoose.Schema({
     },
   ],
   animation: {
-    type: {
-      type: String,
-      enum: ["fade-in", "block-swipe", "3d flip"],
-    },
+    type: String,
+    enum: ["fade-in", "block-swipe", "3d flip"],
+    default: null,
   },
 });
 

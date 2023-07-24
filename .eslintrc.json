@@ -17,6 +17,7 @@
     "camelcase": "off",
     "import/no-extraneous-dependencies": "off",
     "import/prefer-default-export": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }
 }

@@ -16,7 +16,7 @@ async function getAllSlides(req, res, next) {
     const allSlides = presentation.slides;
 
     if (allSlides.length === 0) {
-      return res.status(200).json({
+      return res.json({
         result: "success",
         message: "No slides found",
         slides: [],
@@ -60,9 +60,10 @@ async function createSlide(req, res, next) {
     };
 
     presentation.slides.push(newSlide);
+
     await presentation.save();
 
-    res.status(201).json({ result: "success", slide: newSlide });
+    res.json({ result: "success", slide: newSlide });
   } catch (err) {
     next(err);
   }
@@ -82,11 +83,35 @@ async function deleteSlide(req, res, next) {
     }
 
     slide.remove();
+
     await presentation.save();
 
-    res
-      .status(200)
-      .json({ result: "success", message: "Slide successfully deleted" });
+    res.json({ result: "success", message: "Slide successfully deleted" });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function updateSlides(req, res, next) {
+  const { presentation_id } = req.params;
+  const newSequence = req.body.newOrder;
+
+  try {
+    const presentation = await Presentation.findById(presentation_id);
+
+    if (!presentation) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Presentation not found" });
+    }
+
+    const newSlides = newSequence.map(id => presentation.slides.id(id));
+
+    presentation.slides = newSlides;
+
+    await presentation.save();
+
+    res.json({ result: "success", message: "Slide successfully deleted" });
   } catch (err) {
     next(err);
   }
@@ -97,4 +122,5 @@ module.exports = {
   getAllSlides,
   createSlide,
   deleteSlide,
+  updateSlides,
 };

@@ -104,9 +104,20 @@ async function getObject(req, res, next) {
 
   try {
     const presentation = await Presentation.findById(presentation_id);
-    const slide = presentation.slides.id(slide_id);
-    const object = slide.objects.id(object_id);
+    if (!presentation) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Presentation not found" });
+    }
 
+    const slide = presentation.slides.id(slide_id);
+    if (!slide) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Slide not found" });
+    }
+
+    const object = slide.objects.id(object_id);
     if (!object) {
       return res
         .status(404)
@@ -128,9 +139,20 @@ async function deleteObject(req, res, next) {
 
   try {
     const presentation = await Presentation.findById(presentation_id);
-    const slide = presentation.slides.id(slide_id);
-    const object = slide.objects.id(object_id);
+    if (!presentation) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Presentation not found" });
+    }
 
+    const slide = presentation.slides.id(slide_id);
+    if (!slide) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Slide not found" });
+    }
+
+    const object = slide.objects.id(object_id);
     if (!object) {
       return res
         .status(404)
@@ -156,9 +178,20 @@ async function updateObject(req, res, next) {
 
   try {
     const presentation = await Presentation.findById(presentation_id);
-    const slide = presentation.slides.id(slide_id);
-    const object = slide.objects.id(object_id);
+    if (!presentation) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Presentation not found" });
+    }
 
+    const slide = presentation.slides.id(slide_id);
+    if (!slide) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Slide not found" });
+    }
+
+    const object = slide.objects.id(object_id);
     if (!object) {
       return res
         .status(404)
