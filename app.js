@@ -5,27 +5,41 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const AWS = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+
 const login = require("./routes/loginRoutes");
 const presentation = require("./routes/presentationRoutes");
 const slide = require("./routes/slideRoutes");
+const object = require("./routes/objectRoutes");
+const animation = require("./routes/animationRoutes");
+
+const config = require("./configs/appConfig");
 
 const app = express();
-mongoose.connect(process.env.MONGODB_URI);
-
-const corsOptions = {
-  origin: "http://localhost:5173",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+mongoose.connect(config.database.uri);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger("dev"));
-app.use(cors(corsOptions));
+app.use(cors(config.cors));
 
-app.use("/login", login);
-app.use("/users/:user_id/presentations", presentation);
-app.use("/users/:user_id/presentations/:presentation_id/slides", slide);
+const s3 = new AWS.S3(config.aws);
+
+const upload = multer({
+  storage: multerS3({
+    s3,
+    bucket: config.multer.bucket,
+    key: config.multer.key,
+  }),
+});
+
+app.use(config.routes.login, login);
+app.use(config.routes.presentation, presentation);
+app.use(config.routes.slide, upload.single("image"), slide);
+app.use(config.routes.object, object);
+app.use(config.routes.animation, animation);
 
 app.use((req, res, next) => {
   next(createError(404));

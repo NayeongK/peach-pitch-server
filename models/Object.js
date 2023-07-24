@@ -1,29 +1,29 @@
 const mongoose = require("mongoose");
 
 const ObjectSchema = new mongoose.Schema({
-  objectId: { type: mongoose.Schema.Types.ObjectId },
   type: {
     type: String,
-    enum: ["Circle", "Triangle", "Rectangle", "TextBox", "Image"],
+    enum: ["Circle", "Triangle", "Square", "TextBox", "Image"],
     required: true,
   },
   coordinates: {
-    x: { type: Number, required: true, default: 0 },
-    y: { type: Number, required: true, default: 0 },
+    x: { type: Number, required: true, default: 100 },
+    y: { type: Number, required: true, default: 100 },
   },
   dimensions: {
     height: { type: Number, required: true, default: 100 },
     width: { type: Number, required: true, default: 100 },
   },
-  animation: {
-    type: {
-      type: String,
-      enum: ["fade-in", "block-swipe", "3d flip"],
+  boundaryVertices: [
+    {
+      x: { type: Number, required: true },
+      y: { type: Number, required: true },
     },
-  },
-  properties: {
-    type: mongoose.Schema.Types.Mixed,
-    default: {},
+  ],
+  animation: {
+    type: String,
+    enum: ["fade-in", "block-swipe", "3d flip"],
+    default: null,
   },
 });
 
@@ -38,22 +38,27 @@ const CircleSchema = new mongoose.Schema(
 
 const TriangleSchema = new mongoose.Schema(
   {
-    vertices: [
-      {
-        x: { type: Number, required: true },
-        y: { type: Number, required: true },
-      },
-    ],
+    vertices: {
+      type: [
+        {
+          x: { type: Number, default: 0 },
+          y: { type: Number, default: 0 },
+        },
+      ],
+      default: [
+        { x: 0, y: 100 },
+        { x: 50, y: 0 },
+        { x: 100, y: 100 },
+      ],
+    },
     fillColor: { type: String, default: "#FFFFFF" },
     borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
 );
 
-const RectangleSchema = new mongoose.Schema(
+const SquareSchema = new mongoose.Schema(
   {
-    width: { type: Number, required: true, default: 100 },
-    height: { type: Number, required: true, default: 50 },
     fillColor: { type: String, default: "#FFFFFF" },
     borderColor: { type: String, default: "#000000" },
   },
@@ -84,7 +89,7 @@ const ImageSchema = new mongoose.Schema(
 ObjectSchema.add({
   Circle: CircleSchema,
   Triangle: TriangleSchema,
-  Rectangle: RectangleSchema,
+  Square: SquareSchema,
   TextBox: TextBoxSchema,
   Image: ImageSchema,
 });

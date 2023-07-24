@@ -1,10 +1,12 @@
-exports.loginUser = async (req, res) => {
+function loginUser(req, res, next) {
   try {
     res.status(200).json({
       result: "ok",
       user: req.user,
     });
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+  } catch (err) {
+    next(err);
   }
-};
+}
+
+module.exports = loginUser;
