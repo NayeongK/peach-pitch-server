@@ -74,15 +74,14 @@ async function deleteSlide(req, res, next) {
 
   try {
     const presentation = await Presentation.findById(presentation_id);
-    const slide = presentation.slides.id(slide_id);
 
-    if (!slide) {
+    if (!presentation) {
       return res
         .status(404)
-        .json({ result: "error", message: "No slide found to delete" });
+        .json({ result: "error", message: "Presentation not found" });
     }
 
-    slide.remove();
+    presentation.slides.id(slide_id);
 
     await presentation.save();
 
