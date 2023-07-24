@@ -20,11 +20,7 @@ const ObjectSchema = new mongoose.Schema({
       y: { type: Number, required: true },
     },
   ],
-  animation: {
-    type: String,
-    enum: ["fade-in", "block-swipe", "3d flip"],
-    default: null,
-  },
+  currentAnimation: { type: String, default: null },
 });
 
 const CircleSchema = new mongoose.Schema(
