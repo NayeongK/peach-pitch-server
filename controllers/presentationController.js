@@ -69,21 +69,22 @@ async function savePresentation(req, res, next) {
   const updates = req.body;
 
   try {
-    let presentation = await Presentation.findById(id);
+    const updatedPresentation = await Presentation.findByIdAndUpdate(
+      id,
+      updates,
+      { new: true },
+    );
 
-    if (!presentation) {
+    if (!updatedPresentation) {
       return res
         .status(404)
         .json({ result: "error", message: "No presentation found to save" });
     }
 
-    await Presentation.findByIdAndUpdate(id, updates);
-    presentation = await Presentation.findById(id);
-
     res.json({
       result: "success",
       message: "Presentation successfully saved",
-      presentation,
+      presentation: updatedPresentation,
     });
   } catch (err) {
     next(err);

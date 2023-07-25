@@ -6,11 +6,15 @@ const {
   createObject,
   updateObject,
   deleteObject,
+  updateObjectZindex,
 } = require("../controllers/objectController");
 
-router.get("/:object_id", getObject);
-router.post("/", createObject);
-router.put("/:object_id", updateObject);
-router.delete("/:object_id", deleteObject);
+router.route("/").post(createObject).put(updateObjectZindex);
+
+router
+  .route("/:object_id")
+  .get(getObject)
+  .put(updateObject)
+  .delete(deleteObject);
 
 module.exports = router;

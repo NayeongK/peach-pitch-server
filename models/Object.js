@@ -20,11 +20,7 @@ const ObjectSchema = new mongoose.Schema({
       y: { type: Number, required: true },
     },
   ],
-  animation: {
-    type: String,
-    enum: ["fade-in", "block-swipe", "3d flip"],
-    default: null,
-  },
+  currentAnimation: { type: String, default: null },
 });
 
 const CircleSchema = new mongoose.Schema(
@@ -69,9 +65,18 @@ const TextBoxSchema = new mongoose.Schema(
   {
     content: { type: String, default: "New Textbox" },
     fontSize: { type: Number, default: 14 },
-    textAlign: { type: String, default: "left" },
     fontFamily: { type: String, default: "Arial" },
-    fontStyle: { type: String, default: "normal" },
+    textAlign: {
+      type: String,
+      enum: ["left", "right", "center", "justify"],
+      default: "left",
+    },
+    textColor: { type: String, default: "#000000" },
+    fontStyle: {
+      type: [String],
+      enum: ["normal", "bold", "italic", "underline", "strikeThrough"],
+      default: ["normal"],
+    },
     innerColor: { type: String, default: "#000000" },
     borderColor: { type: String, default: "#000000" },
   },
