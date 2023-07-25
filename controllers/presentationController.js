@@ -22,15 +22,18 @@ async function getAllPresentations(req, res, next) {
 }
 
 async function getPresentation(req, res, next) {
-  const { id } = req.params;
+  const { presentation_id } = req.params;
 
   try {
-    const presentation = await Presentation.findById(id);
+    const presentation = await Presentation.findById({ presentation_id });
 
     if (!presentation) {
       return res
         .status(404)
-        .json({ result: "error", message: `No presentation found with ${id}` });
+        .json({
+          result: "error",
+          message: `No presentation found with ${presentation_id}`,
+        });
     }
 
     res.json({ result: "success", presentation });
@@ -62,10 +65,12 @@ async function createPresentation(req, res, next) {
 }
 
 async function deletePresentation(req, res, next) {
-  const { id } = req.params;
+  const { presentation_id } = req.params;
 
   try {
-    const deletedPresentation = await Presentation.findByIdAndDelete(id);
+    const deletedPresentation = await Presentation.findByIdAndDelete(
+      presentation_id,
+    );
 
     if (!deletedPresentation) {
       return res
@@ -83,12 +88,12 @@ async function deletePresentation(req, res, next) {
 }
 
 async function savePresentation(req, res, next) {
-  const { id } = req.params;
+  const { presentation_id } = req.params;
   const updates = req.body;
 
   try {
     const updatedPresentation = await Presentation.findByIdAndUpdate(
-      id,
+      presentation_id,
       updates,
       { new: true },
     );
