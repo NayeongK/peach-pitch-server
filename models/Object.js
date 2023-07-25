@@ -18,6 +18,7 @@ const ObjectSchema = new mongoose.Schema({
     {
       x: { type: Number, required: true },
       y: { type: Number, required: true },
+      _id: false,
     },
   ],
   currentAnimation: { type: String, default: null },
