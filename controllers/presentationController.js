@@ -25,15 +25,13 @@ async function getPresentation(req, res, next) {
   const { presentation_id } = req.params;
 
   try {
-    const presentation = await Presentation.findById({ presentation_id });
+    const presentation = await Presentation.findById(presentation_id);
 
     if (!presentation) {
-      return res
-        .status(404)
-        .json({
-          result: "error",
-          message: `No presentation found with ${presentation_id}`,
-        });
+      return res.status(404).json({
+        result: "error",
+        message: `No presentation found with ${presentation_id}`,
+      });
     }
 
     res.json({ result: "success", presentation });
