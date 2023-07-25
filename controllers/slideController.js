@@ -81,11 +81,12 @@ async function deleteSlide(req, res, next) {
         .json({ result: "error", message: "Presentation not found" });
     }
 
-    presentation.slides.id(slide_id);
-
+    presentation.slides.pull(slide_id);
     await presentation.save();
 
-    res.json({ result: "success", message: "Slide successfully deleted" });
+    res
+      .status(200)
+      .json({ result: "success", message: "Slide successfully deleted" });
   } catch (err) {
     next(err);
   }
