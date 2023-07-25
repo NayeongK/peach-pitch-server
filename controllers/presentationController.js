@@ -5,9 +5,9 @@ async function getAllPresentations(req, res, next) {
   const { user_id } = req.params;
 
   try {
-    const allPresentations = await Presentation.find({ userId: user_id });
+    const presentations = await Presentation.find({ userId: user_id });
 
-    if (allPresentations.length === 0) {
+    if (presentations.length === 0) {
       return res.status(200).json({
         result: "success",
         message: "No presentations found created by the user",
@@ -15,7 +15,28 @@ async function getAllPresentations(req, res, next) {
       });
     }
 
-    res.json({ result: "success", presentations: allPresentations });
+    res.json({ result: "success", presentations });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getPresentation(req, res, next) {
+  const { presentation_id } = req.params;
+
+  try {
+    const presentation = await Presentation.findById({ presentation_id });
+
+    if (!presentation) {
+      return res
+        .status(404)
+        .json({
+          result: "error",
+          message: `No presentation found with ${presentation_id}`,
+        });
+    }
+
+    res.json({ result: "success", presentation });
   } catch (err) {
     next(err);
   }
@@ -44,10 +65,12 @@ async function createPresentation(req, res, next) {
 }
 
 async function deletePresentation(req, res, next) {
-  const { id } = req.params;
+  const { presentation_id } = req.params;
 
   try {
-    const deletedPresentation = await Presentation.findByIdAndDelete(id);
+    const deletedPresentation = await Presentation.findByIdAndDelete(
+      presentation_id,
+    );
 
     if (!deletedPresentation) {
       return res
@@ -65,12 +88,12 @@ async function deletePresentation(req, res, next) {
 }
 
 async function savePresentation(req, res, next) {
-  const { id } = req.params;
+  const { presentation_id } = req.params;
   const updates = req.body;
 
   try {
     const updatedPresentation = await Presentation.findByIdAndUpdate(
-      id,
+      presentation_id,
       updates,
       { new: true },
     );
@@ -96,4 +119,5 @@ module.exports = {
   createPresentation,
   savePresentation,
   deletePresentation,
+  getPresentation,
 };
