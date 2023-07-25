@@ -73,9 +73,9 @@ const TextBoxSchema = new mongoose.Schema(
     },
     textColor: { type: String, default: "#000000" },
     fontStyle: {
-      type: String,
+      type: [String],
       enum: ["normal", "bold", "italic", "underline", "strikeThrough"],
-      default: "normal",
+      default: ["normal"],
     },
     innerColor: { type: String, default: "#000000" },
     borderColor: { type: String, default: "#000000" },
