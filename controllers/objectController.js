@@ -3,7 +3,7 @@ const Presentation = require("../models/Presentation");
 
 async function createObject(req, res, next) {
   const { presentation_id, slide_id } = req.params;
-  const { type } = req.body;
+  const { type, imageUrl } = req.body;
   const defaultObjectProperties = {
     objectId: new mongoose.Types.ObjectId(),
     type,
@@ -60,7 +60,7 @@ async function createObject(req, res, next) {
       break;
     case "Image":
       defaultObjectProperties.Image = {
-        imageUrl: "",
+        imageUrl,
         borderColor: "#000000",
       };
       break;
