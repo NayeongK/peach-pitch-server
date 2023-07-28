@@ -5,10 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const AWS = require("aws-sdk");
-const multer = require("multer");
-const multerS3 = require("multer-s3");
-
 const login = require("./routes/loginRoutes");
 const presentation = require("./routes/presentationRoutes");
 const slide = require("./routes/slideRoutes");
@@ -25,19 +21,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger("dev"));
 app.use(cors(config.cors));
 
-const s3 = new AWS.S3(config.aws);
-
-const upload = multer({
-  storage: multerS3({
-    s3,
-    bucket: config.multer.bucket,
-    key: config.multer.key,
-  }),
-});
-
 app.use(config.routes.login, login);
 app.use(config.routes.presentation, presentation);
-app.use(config.routes.slide, upload.single("image"), slide);
+app.use(config.routes.slide, slide);
 app.use(config.routes.object, object);
 app.use(config.routes.animation, animation);
 
