@@ -3,7 +3,7 @@ const Presentation = require("../models/Presentation");
 
 async function createObject(req, res, next) {
   const { presentation_id, slide_id } = req.params;
-  const { type } = req.body;
+  const { type, imageUrl } = req.body;
   const defaultObjectProperties = {
     objectId: new mongoose.Types.ObjectId(),
     type,
@@ -47,8 +47,8 @@ async function createObject(req, res, next) {
         borderColor: "#000000",
       };
       break;
-    case "TextBox":
-      defaultObjectProperties.TextBox = {
+    case "Textbox":
+      defaultObjectProperties.Textbox = {
         content: "New Textbox",
         fontSize: 14,
         textAlign: "left",
@@ -60,7 +60,7 @@ async function createObject(req, res, next) {
       break;
     case "Image":
       defaultObjectProperties.Image = {
-        imageUrl: "",
+        imageUrl,
         borderColor: "#000000",
       };
       break;
@@ -93,6 +93,34 @@ async function createObject(req, res, next) {
       result: "success",
       message: "Object successfully created",
       object: defaultObjectProperties,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getAllObjects(req, res, next) {
+  const { presentation_id, slide_id } = req.params;
+
+  try {
+    const presentation = await Presentation.findById(presentation_id);
+    if (!presentation) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Presentation not found" });
+    }
+
+    const slide = presentation.slides.id(slide_id);
+    if (!slide) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Slide not found" });
+    }
+
+    res.json({
+      result: "success",
+      message: "Objects successfully retrieved",
+      objects: slide.objects,
     });
   } catch (err) {
     next(err);
@@ -255,6 +283,7 @@ async function updateObjectZindex(req, res, next) {
 module.exports = {
   createObject,
   getObject,
+  getAllObjects,
   updateObject,
   deleteObject,
   updateObjectZindex,
