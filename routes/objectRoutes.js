@@ -3,13 +3,14 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const {
   getObject,
+  getAllObjects,
   createObject,
   updateObject,
   deleteObject,
   updateObjectZindex,
 } = require("../controllers/objectController");
 
-router.route("/").post(createObject).put(updateObjectZindex);
+router.route("/").get(getAllObjects).post(createObject).put(updateObjectZindex);
 
 router
   .route("/:object_id")

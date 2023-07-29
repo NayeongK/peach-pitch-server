@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ObjectSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ["Circle", "Triangle", "Square", "TextBox", "Image"],
+    enum: ["Circle", "Triangle", "Square", "Textbox", "Image"],
     required: true,
   },
   coordinates: {
