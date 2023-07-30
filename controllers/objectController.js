@@ -185,6 +185,7 @@ async function deleteObject(req, res, next) {
         .json({ result: "error", message: "Object not found" });
     }
     slide.objects.pull(object_id);
+    slide.zIndexSequence = slide.zIndexSequence.filter(id => id !== object_id);
     await presentation.save();
     res.json({
       result: "success",
