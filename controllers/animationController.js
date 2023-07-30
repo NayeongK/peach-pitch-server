@@ -174,44 +174,9 @@ async function updateObjectAnimation(req, res, next) {
   }
 }
 
-async function updateObjectAnimationSequence(req, res, next) {
-  const { presentation_id, slide_id } = req.params;
-  const { newSequence } = req.body;
-
-  try {
-    const presentation = await Presentation.findById(presentation_id);
-
-    if (!presentation) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Presentation not found" });
-    }
-
-    const slide = presentation.slides.id(slide_id);
-    if (!slide) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Slide not found" });
-    }
-
-    slide.animationSequence = newSequence;
-
-    await presentation.save();
-
-    res.json({
-      result: "success",
-      message: "Animation sequence successfully updated",
-      animationSeq: slide.animationSequence,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
 module.exports = {
   addObjectAnimation,
   getAllObjectAnimations,
   deleteObjectAnimation,
   updateObjectAnimation,
-  updateObjectAnimationSequence,
 };
