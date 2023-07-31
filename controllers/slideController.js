@@ -153,7 +153,7 @@ async function updateObjectAnimationSequence(req, res, next) {
 
 async function updateObjectZindex(req, res, next) {
   const { presentation_id, slide_id, object_id } = req.params;
-  const { newZindexSequence } = req.body;
+  const { newSequence } = req.body;
 
   try {
     const presentation = await Presentation.findById(presentation_id);
@@ -177,7 +177,7 @@ async function updateObjectZindex(req, res, next) {
         .json({ result: "error", message: "Object not found" });
     }
 
-    object.zIndexSequence = newZindexSequence;
+    slide.zIndexSequence = newSequence;
 
     await presentation.save();
 
