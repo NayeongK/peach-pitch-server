@@ -8,7 +8,7 @@ const {
   deleteSlide,
   updateSlides,
   updateObjectAnimationSequence,
-  updateObjectZindex,
+  updateObjectOverlay,
 } = require("../controllers/slideController");
 
 router.route("/").get(getAllSlides).post(createSlide).put(updateSlides);
@@ -17,6 +17,6 @@ router.route("/:slide_id").get(getSlide).delete(deleteSlide);
 
 router.route("/:slide_id/animations").put(updateObjectAnimationSequence);
 
-router.route("/:slideId/zindex").put(updateObjectZindex);
+router.route("/:slide_id/zindex").put(updateObjectOverlay);
 
 module.exports = router;
