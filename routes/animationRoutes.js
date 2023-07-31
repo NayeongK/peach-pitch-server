@@ -6,14 +6,9 @@ const {
   deleteObjectAnimation,
   updateObjectAnimation,
   getAllObjectAnimations,
-  updateObjectAnimationSequence,
 } = require("../controllers/animationController");
 
-router
-  .route("/")
-  .get(getAllObjectAnimations)
-  .post(addObjectAnimation)
-  .put(updateObjectAnimationSequence);
+router.route("/").get(getAllObjectAnimations).post(addObjectAnimation);
 
 router
   .route("/:animation_id")

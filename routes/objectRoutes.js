@@ -7,10 +7,9 @@ const {
   createObject,
   updateObject,
   deleteObject,
-  updateObjectZindex,
 } = require("../controllers/objectController");
 
-router.route("/").get(getAllObjects).post(createObject).put(updateObjectZindex);
+router.route("/").get(getAllObjects).post(createObject);
 
 router
   .route("/:object_id")

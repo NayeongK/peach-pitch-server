@@ -90,6 +90,7 @@ async function createObject(req, res, next) {
     }
 
     slide.objects.push(defaultObjectProperties);
+    slide.zIndexSequence.push(defaultObjectProperties.objectId.toString());
 
     await presentation.save();
 
@@ -168,7 +169,6 @@ async function getObject(req, res, next) {
 
 async function deleteObject(req, res, next) {
   const { presentation_id, slide_id, object_id } = req.params;
-
   try {
     const presentation = await Presentation.findById(presentation_id);
     if (!presentation) {
@@ -176,14 +176,12 @@ async function deleteObject(req, res, next) {
         .status(404)
         .json({ result: "error", message: "Presentation not found" });
     }
-
     const slide = presentation.slides.id(slide_id);
     if (!slide) {
       return res
         .status(404)
         .json({ result: "error", message: "Slide not found" });
     }
-
     const object = slide.objects.id(object_id);
     if (!object) {
       return res
@@ -192,9 +190,9 @@ async function deleteObject(req, res, next) {
     }
 
     slide.objects.pull(object_id);
+    slide.zIndexSequence = slide.zIndexSequence.filter(id => id !== object_id);
 
     await presentation.save();
-
     res.json({
       result: "success",
       message: "Object successfully deleted",
@@ -244,51 +242,10 @@ async function updateObject(req, res, next) {
   }
 }
 
-async function updateObjectZindex(req, res, next) {
-  const { presentation_id, slide_id, object_id } = req.params;
-  const { newZindexSequence } = req.body;
-
-  try {
-    const presentation = await Presentation.findById(presentation_id);
-    if (!presentation) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Presentation not found" });
-    }
-
-    const slide = presentation.slides.id(slide_id);
-    if (!slide) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Slide not found" });
-    }
-
-    const object = slide.objects.id(object_id);
-    if (!object) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Object not found" });
-    }
-
-    object.zIndexSequence = newZindexSequence;
-
-    await presentation.save();
-
-    res.json({
-      result: "success",
-      message: "Object z-index successfully updated",
-      updatedObject: object.zIndexSequence,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
 module.exports = {
   createObject,
   getObject,
   getAllObjects,
   updateObject,
   deleteObject,
-  updateObjectZindex,
 };

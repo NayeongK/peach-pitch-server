@@ -17,7 +17,7 @@ const SlideSchema = new mongoose.Schema({
       },
       animationEffect: {
         type: String,
-        enum: ["fade-in", "block-swipe", "3d flip"],
+        enum: ["fade-in", "block-wipe", "3d-flip"],
         default: null,
       },
     },
