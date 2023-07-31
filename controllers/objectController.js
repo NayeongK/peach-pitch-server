@@ -33,11 +33,15 @@ async function createObject(req, res, next) {
     case "Triangle":
       defaultObjectProperties.Triangle = {
         vertices: [
-          { x: 0, y: 100 },
           { x: 50, y: 0 },
+          { x: 0, y: 100 },
           { x: 100, y: 100 },
         ],
-        fillColor: "#FFFFFF",
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        fillColor: "#000000",
         borderColor: "#000000",
       };
       break;
@@ -86,7 +90,6 @@ async function createObject(req, res, next) {
     }
 
     slide.objects.push(defaultObjectProperties);
-    slide.zIndexSequence.push(defaultObjectProperties.objectId.toString());
 
     await presentation.save();
 
@@ -190,8 +193,10 @@ async function deleteObject(req, res, next) {
         .status(404)
         .json({ result: "error", message: "Object not found" });
     }
+
     slide.objects.pull(object_id);
     slide.zIndexSequence = slide.zIndexSequence.filter(id => id !== object_id);
+
     await presentation.save();
     res.json({
       result: "success",

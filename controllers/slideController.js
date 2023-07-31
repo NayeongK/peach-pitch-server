@@ -154,9 +154,6 @@ async function updateObjectAnimationSequence(req, res, next) {
 async function updateObjectOverlay(req, res, next) {
   const { presentation_id, slide_id } = req.params;
   const { newZIndexSequence, newObjectSequence } = req.body;
-  console.log(newZIndexSequence);
-  console.log(newObjectSequence);
-
   try {
     const presentation = await Presentation.findById(presentation_id);
     if (!presentation) {
@@ -171,10 +168,13 @@ async function updateObjectOverlay(req, res, next) {
         .status(404)
         .json({ result: "error", message: "Slide not found" });
     }
-
     slide.zIndexSequence = newZIndexSequence;
 
     slide.objects = newObjectSequence;
+
+    slide.markModified("zIndexSequence");
+    slide.markModified("objects");
+    presentation.markModified("slides");
 
     await presentation.save();
 

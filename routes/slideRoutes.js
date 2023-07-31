@@ -17,6 +17,6 @@ router.route("/:slide_id").get(getSlide).delete(deleteSlide);
 
 router.route("/:slide_id/animations").put(updateObjectAnimationSequence);
 
-router.route("/:slideId/zindex").put(updateObjectOverlay);
+router.route("/:slide_id/zindex").put(updateObjectOverlay);
 
 module.exports = router;
