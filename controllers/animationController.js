@@ -2,7 +2,7 @@ const Presentation = require("../models/Presentation");
 
 async function addObjectAnimation(req, res, next) {
   const { presentation_id, slide_id, object_id } = req.params;
-  const { animation } = req.body;
+  const { animationType } = req.body;
 
   try {
     const presentation = await Presentation.findById(presentation_id);
@@ -26,12 +26,20 @@ async function addObjectAnimation(req, res, next) {
         .json({ result: "error", message: "Object not found" });
     }
 
-    object.currentAnimation = animation;
+    object.currentAnimation = animationType;
 
-    slide.animationSequence.push({
-      objectId: object_id,
-      animationEffect: animation,
-    });
+    const index = slide.animationSequence.findIndex(
+      obj => obj.objectId.toString() === object_id,
+    );
+
+    if (index !== -1) {
+      slide.animationSequence[index].animationEffect = animationType;
+    } else {
+      slide.animationSequence.push({
+        objectId: object_id,
+        animationEffect: animationType,
+      });
+    }
 
     await presentation.save();
 
@@ -166,44 +174,9 @@ async function updateObjectAnimation(req, res, next) {
   }
 }
 
-async function updateObjectAnimationSequence(req, res, next) {
-  const { presentation_id, slide_id } = req.params;
-  const { newSequence } = req.body;
-
-  try {
-    const presentation = await Presentation.findById(presentation_id);
-
-    if (!presentation) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Presentation not found" });
-    }
-
-    const slide = presentation.slides.id(slide_id);
-    if (!slide) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Slide not found" });
-    }
-
-    slide.animationSequence = newSequence;
-
-    await presentation.save();
-
-    res.json({
-      result: "success",
-      message: "Animation sequence successfully updated",
-      animationSeq: slide.animationSequence,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
 module.exports = {
   addObjectAnimation,
   getAllObjectAnimations,
   deleteObjectAnimation,
   updateObjectAnimation,
-  updateObjectAnimationSequence,
 };
