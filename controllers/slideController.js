@@ -151,9 +151,11 @@ async function updateObjectAnimationSequence(req, res, next) {
   }
 }
 
-async function updateObjectZindex(req, res, next) {
-  const { presentation_id, slide_id, object_id } = req.params;
-  const { newSequence } = req.body;
+async function updateObjectOverlay(req, res, next) {
+  const { presentation_id, slide_id } = req.params;
+  const { newZIndexSequence, newObjectSequence } = req.body;
+  console.log(newZIndexSequence);
+  console.log(newObjectSequence);
 
   try {
     const presentation = await Presentation.findById(presentation_id);
@@ -170,21 +172,16 @@ async function updateObjectZindex(req, res, next) {
         .json({ result: "error", message: "Slide not found" });
     }
 
-    const object = slide.objects.id(object_id);
-    if (!object) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "Object not found" });
-    }
+    slide.zIndexSequence = newZIndexSequence;
 
-    slide.zIndexSequence = newSequence;
+    slide.objects = newObjectSequence;
 
     await presentation.save();
 
     res.json({
       result: "success",
-      message: "Object z-index successfully updated",
-      updatedObject: object.zIndexSequence,
+      message: "Slide updated successfully",
+      updatedSlide: slide,
     });
   } catch (err) {
     next(err);
@@ -198,5 +195,5 @@ module.exports = {
   deleteSlide,
   updateSlides,
   updateObjectAnimationSequence,
-  updateObjectZindex,
+  updateObjectOverlay,
 };

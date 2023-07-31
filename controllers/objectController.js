@@ -90,6 +90,12 @@ async function createObject(req, res, next) {
 
     await presentation.save();
 
+    const createdObject = slide.objects[slide.objects.length - 1];
+
+    slide.zIndexSequence.push(createdObject._id.toString());
+
+    await presentation.save();
+
     res.json({
       result: "success",
       message: "Object successfully created",
