@@ -82,7 +82,7 @@ const TextBoxSchema = new mongoose.Schema(
       enum: ["normal", "bold", "italic", "underline", "strikeThrough"],
       default: ["normal"],
     },
-    innerColor: { type: String, default: "#000000" },
+    fillColor: { type: String, default: "#000000" },
     borderColor: { type: String, default: "#000000" },
   },
   { _id: false },
