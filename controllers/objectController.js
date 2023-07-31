@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const mongoose = require("mongoose");
 const Presentation = require("../models/Presentation");
 
@@ -230,7 +232,7 @@ async function updateObject(req, res, next) {
         .json({ result: "error", message: "Object not found" });
     }
 
-    Object.assign(object, updateData);
+    _.merge(object, updateData);
 
     await presentation.save();
 
