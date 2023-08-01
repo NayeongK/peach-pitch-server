@@ -66,7 +66,7 @@ const SquareSchema = new mongoose.Schema(
   { _id: false },
 );
 
-const TextBoxSchema = new mongoose.Schema(
+const TextboxSchema = new mongoose.Schema(
   {
     content: { type: String, default: "New Textbox" },
     fontSize: { type: Number, default: 14 },
@@ -77,16 +77,27 @@ const TextBoxSchema = new mongoose.Schema(
       default: "left",
     },
     textColor: { type: String, default: "#000000" },
-    fontStyle: {
-      type: [String],
-      enum: ["normal", "bold", "italic", "underline", "strikeThrough"],
-      default: ["normal"],
+    fontWeight: {
+      type: String,
+      enum: ["normal", "bold"],
+      default: "normal",
     },
-    fillColor: { type: String, default: "#000000" },
-    borderColor: { type: String, default: "#000000" },
+    fontStyle: {
+      type: String,
+      enum: ["normal", "italic"],
+      default: "normal",
+    },
+    textDecoration: {
+      type: String,
+      enum: ["none", "underline"],
+      default: "none",
+    },
+    fillColor: { type: String, default: "transparent" },
+    borderColor: { type: String, default: "transparent" },
   },
   { _id: false },
 );
+
 
 const ImageSchema = new mongoose.Schema(
   {
@@ -100,7 +111,7 @@ ObjectSchema.add({
   Circle: CircleSchema,
   Triangle: TriangleSchema,
   Square: SquareSchema,
-  TextBox: TextBoxSchema,
+  Textbox: TextboxSchema,
   Image: ImageSchema,
 });
 
