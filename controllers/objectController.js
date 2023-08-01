@@ -203,7 +203,11 @@ async function deleteObject(req, res, next) {
       animation => animation.objectId.toString() !== object_id,
     );
 
-    slide.objects.pull(object_id);
+    slide.objects = slide.objects.map(obj =>
+      obj._id.toString() === object_id ? null : obj,
+    );
+
+    slide.objects = slide.objects.filter(obj => obj !== null);
 
     await presentation.save();
     res.json({
