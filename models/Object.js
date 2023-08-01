@@ -52,16 +52,16 @@ const TriangleSchema = new mongoose.Schema(
     y: { type: Number },
     width: { type: Number },
     height: { type: Number },
-    fillColor: { type: String, default: "#000000" },
-    borderColor: { type: String, default: "#000000" },
+    fillColor: { type: String, default: "#d9d9d9" },
+    borderColor: { type: String, default: "transparent" },
   },
   { _id: false },
 );
 
 const SquareSchema = new mongoose.Schema(
   {
-    fillColor: { type: String, default: "#FFFFFF" },
-    borderColor: { type: String, default: "#000000" },
+    fillColor: { type: String, default: "#d9d9d9" },
+    borderColor: { type: String, default: "transparent" },
   },
   { _id: false },
 );
@@ -92,7 +92,7 @@ const TextboxSchema = new mongoose.Schema(
       enum: ["none", "underline"],
       default: "none",
     },
-    fillColor: { type: String, default: "transparent" },
+    fillColor: { type: String, default: "#d9d9d9" },
     borderColor: { type: String, default: "transparent" },
   },
   { _id: false },
@@ -102,7 +102,7 @@ const TextboxSchema = new mongoose.Schema(
 const ImageSchema = new mongoose.Schema(
   {
     imageUrl: { type: String, default: "" },
-    borderColor: { type: String, default: "#000000" },
+    borderColor: { type: String, default: "transparent" },
   },
   { _id: false },
 );

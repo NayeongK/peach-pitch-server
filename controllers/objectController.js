@@ -28,8 +28,8 @@ async function createObject(req, res, next) {
     case "Circle":
       defaultObjectProperties.Circle = {
         radius: 50,
-        fillColor: "#FFFFFF",
-        borderColor: "#000000",
+        fillColor: "#d9d9d9",
+        borderColor: "transparent",
       };
       break;
     case "Triangle":
@@ -43,14 +43,14 @@ async function createObject(req, res, next) {
         y: 0,
         width: 100,
         height: 100,
-        fillColor: "#000000",
-        borderColor: "#000000",
+        fillColor: "#d9d9d9",
+        borderColor: "transparent",
       };
       break;
     case "Square":
       defaultObjectProperties.Square = {
-        fillColor: "#FFFFFF",
-        borderColor: "#000000",
+        fillColor: "#d9d9d9",
+        borderColor: "transparent",
       };
       break;
     case "Textbox":
@@ -60,14 +60,14 @@ async function createObject(req, res, next) {
         textAlign: "left",
         fontFamily: "Arial",
         fontStyle: "normal",
-        innerColor: "#000000",
-        borderColor: "#000000",
+        innerColor: "#d9d9d9",
+        borderColor: "transparent",
       };
       break;
     case "Image":
       defaultObjectProperties.Image = {
         imageUrl,
-        borderColor: "#000000",
+        borderColor: "transparent",
       };
       break;
     default:
@@ -197,7 +197,9 @@ async function deleteObject(req, res, next) {
     }
 
     slide.objects.pull(object_id);
+
     slide.zIndexSequence = slide.zIndexSequence.filter(id => id !== object_id);
+    slide.animationSequence = slide.animationSequence.filter(id => id !== object_id);
 
     await presentation.save();
     res.json({
