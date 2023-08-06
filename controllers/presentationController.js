@@ -21,25 +21,6 @@ async function getAllPresentations(req, res, next) {
   }
 }
 
-async function getPresentation(req, res, next) {
-  const { presentation_id } = req.params;
-
-  try {
-    const presentation = await Presentation.findById(presentation_id);
-
-    if (!presentation) {
-      return res.status(404).json({
-        result: "error",
-        message: `No presentation found with ${presentation_id}`,
-      });
-    }
-
-    res.json({ result: "success", presentation });
-  } catch (err) {
-    next(err);
-  }
-}
-
 async function createPresentation(req, res, next) {
   const { title } = req.body;
   const { user_id } = req.params;
@@ -56,7 +37,7 @@ async function createPresentation(req, res, next) {
       slides: [newSlide],
     });
 
-    res.json({ result: "success", presentation: newPresentation });
+    res.status(200).json({ result: "success", presentation: newPresentation });
   } catch (err) {
     next(err);
   }
@@ -76,36 +57,9 @@ async function deletePresentation(req, res, next) {
         .json({ result: "error", message: "No presentation found to delete" });
     }
 
-    res.json({
+    res.status(200).json({
       result: "success",
       message: "Presentation successfully deleted",
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
-async function savePresentation(req, res, next) {
-  const { presentation_id } = req.params;
-  const updates = req.body;
-
-  try {
-    const updatedPresentation = await Presentation.findByIdAndUpdate(
-      presentation_id,
-      updates,
-      { new: true },
-    );
-
-    if (!updatedPresentation) {
-      return res
-        .status(404)
-        .json({ result: "error", message: "No presentation found to save" });
-    }
-
-    res.json({
-      result: "success",
-      message: "Presentation successfully saved",
-      presentation: updatedPresentation,
     });
   } catch (err) {
     next(err);
@@ -115,7 +69,5 @@ async function savePresentation(req, res, next) {
 module.exports = {
   getAllPresentations,
   createPresentation,
-  savePresentation,
   deletePresentation,
-  getPresentation,
 };
