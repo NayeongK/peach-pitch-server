@@ -60,6 +60,7 @@ describe("Presentation Router", () => {
         .end(async (err, res) => {
           if (err) return done(err);
 
+          expect(res.statusCode).toEqual(200);
           expect(res.body).toHaveProperty("presentation");
           expect(res.body).toHaveProperty("presentation.title", title);
 
@@ -100,6 +101,7 @@ describe("Presentation Router", () => {
         .end(async (err, res) => {
           if (err) return done(err);
 
+          expect(res.statusCode).toEqual(200);
           expect(res.body).toHaveProperty("result", "success");
           expect(res.body).toHaveProperty(
             "message",

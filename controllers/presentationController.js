@@ -37,7 +37,7 @@ async function createPresentation(req, res, next) {
       slides: [newSlide],
     });
 
-    res.json({ result: "success", presentation: newPresentation });
+    res.status(200).json({ result: "success", presentation: newPresentation });
   } catch (err) {
     next(err);
   }
@@ -57,7 +57,7 @@ async function deletePresentation(req, res, next) {
         .json({ result: "error", message: "No presentation found to delete" });
     }
 
-    res.json({
+    res.status(200).json({
       result: "success",
       message: "Presentation successfully deleted",
     });
