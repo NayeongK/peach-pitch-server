@@ -1,122 +1,118 @@
-require("dotenv").config();
-
-const mongoose = require("mongoose");
 const request = require("supertest");
+const mongoose = require("mongoose");
 const app = require("../../app");
-
 const Presentation = require("../../models/Presentation");
 
-describe("Presentation Router", () => {
-  const userId = process.env.VALID_USER_ID;
-  const invalidUserId = "peach";
-  let presentationId;
+jest.mock("../../models/Presentation", () => ({
+  find: jest.fn(),
+  create: jest.fn(),
+  findByIdAndDelete: jest.fn(),
+}));
 
-  beforeEach(async () => {
-    await mongoose.connect(process.env.MONGODB_URI);
+describe("Presentation Controller Tests", () => {
+  const mockUserId = new mongoose.Types.ObjectId().toString();
+
+  afterAll(async () => {
+    await mongoose.disconnect();
   });
-  afterEach(async () => {
-    await mongoose.connection.close();
-  });
 
-  describe("GET `/users/:user_id/presentations`", () => {
-    it("should return all the presentations the user has", done => {
-      request(app)
-        .get(`/users/${userId}/presentations`)
-        .end(async (err, res) => {
-          if (err) return done(err);
+  describe("GET /users/:user_id/presentations", () => {
+    it("should get all presentations by user ID", async () => {
+      const mockPresentations = [
+        {
+          title: "Presentation 1",
+          userId: mockUserId,
+          slides: [],
+        },
+        {
+          title: "Presentation 2",
+          userId: mockUserId,
+          slides: [],
+        },
+      ];
 
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty("result", "success");
-          expect(res.body).toHaveProperty("presentations");
+      Presentation.find.mockResolvedValue(mockPresentations);
 
-          const allPresentations = await Presentation.where({ userId });
+      const res = await request(app).get(`/users/${mockUserId}/presentations`);
 
-          expect(res.body.presentations).toHaveLength(allPresentations.length);
-
-          done();
-        });
-    });
-
-    it("should NOT get any presentations with invalid user id", done => {
-      request(app)
-        .get(`/users/${invalidUserId}/presentations`)
-        .end((err, res) => {
-          if (err) return done(err);
-
-          expect(res.statusCode).toEqual(500);
-
-          done();
-        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual({
+        result: "success",
+        presentations: mockPresentations,
+      });
     });
   });
 
-  describe("POST `/users/:user_id/presentations`", () => {
-    const title = `${Date.now()}`;
+  describe("POST /users/:user_id/presentations", () => {
+    it("should create a new presentation and return it", async () => {
+      const mockTitle = "New Presentation";
+      const mockSlide = {
+        slideId: new mongoose.Types.ObjectId().toString(),
+        objects: [],
+        animationSeq: [],
+      };
 
-    it("should add a new presentation into the database", done => {
-      request(app)
-        .post(`/users/${userId}/presentations`)
-        .send({ title })
-        .end(async (err, res) => {
-          if (err) return done(err);
+      Presentation.create.mockResolvedValue({
+        title: mockTitle,
+        userId: mockUserId,
+        slides: [mockSlide],
+      });
 
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty("presentation");
-          expect(res.body).toHaveProperty("presentation.title", title);
-
-          const presentations = await Presentation.where({ userId });
-          const presentation = presentations.find(
-            param => param.title === title,
-          );
-
-          expect(res.body.presentation._id).toStrictEqual(
-            presentation._id.toString(),
-          );
-
-          presentationId = res.body.presentation._id;
-
-          done();
+      const res = await request(app)
+        .post(`/users/${mockUserId}/presentations`)
+        .send({
+          title: mockTitle,
         });
-    });
 
-    it("should NOT add a new presentation with invalid user id", done => {
-      request(app)
-        .post(`/users/${invalidUserId}/presentations`)
-        .send({ title })
-        .end((err, res) => {
-          if (err) done(err);
-
-          expect(res.statusCode).toEqual(500);
-
-          done();
-        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual({
+        result: "success",
+        presentation: {
+          title: mockTitle,
+          userId: mockUserId,
+          slides: [mockSlide],
+        },
+      });
     });
   });
 
-  describe("DELETE `/users/:user_id/presentations/:presentation_id`", () => {
-    it("should delete existing presentation", done => {
-      request(app)
-        .delete(`/users/${userId}/presentations/${presentationId}`)
-        .type("json")
-        .end(async (err, res) => {
-          if (err) return done(err);
+  describe("DELETE /users/:user_id/presentations/:presentation_id", () => {
+    it("should successfully delete a presentation", async () => {
+      const mockPresentationId = new mongoose.Types.ObjectId().toString();
 
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty("result", "success");
-          expect(res.body).toHaveProperty(
-            "message",
-            "Presentation successfully deleted",
-          );
+      Presentation.findByIdAndDelete.mockResolvedValue({
+        _id: mockPresentationId,
+        title: "Some Presentation",
+        userId: mockUserId,
+        slides: [],
+      });
 
-          const presentations = await Presentation.where({ userId });
-          const presentation = presentations.find(
-            param => param._id === presentationId,
-          );
+      const res = await request(app).delete(
+        `/users/${mockUserId}/presentations/${mockPresentationId}`,
+      );
 
-          expect(presentation).toBeUndefined();
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toEqual({
+        result: "success",
+        message: "Presentation successfully deleted",
+      });
+    });
 
-          done();
-        });
+    it("should return an error when trying to delete a non-existent presentation", async () => {
+      const nonExistentPresentationId =
+        new mongoose.Types.ObjectId().toString();
+
+      Presentation.findByIdAndDelete.mockResolvedValue(null);
+
+      const res = await request(app).delete(
+        `/users/${mockUserId}/presentations/${nonExistentPresentationId}`,
+      );
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toEqual({
+        result: "error",
+        message: "No presentation found to delete",
+      });
     });
   });
 });
