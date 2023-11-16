@@ -6,6 +6,7 @@ module.exports = {
     origin: process.env.CORS_ORIGIN,
   },
   routes: {
+    index: "/",
     login: "/login",
     presentation: "/users/:user_id/presentations",
     slide: "/users/:user_id/presentations/:presentation_id/slides",

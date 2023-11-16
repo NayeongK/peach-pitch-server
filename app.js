@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const index = require("./routes/indexRoutes");
 const login = require("./routes/loginRoutes");
 const presentation = require("./routes/presentationRoutes");
 const slide = require("./routes/slideRoutes");
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger("dev"));
 app.use(cors(config.cors));
 
+app.use(config.routes.index, index);
 app.use(config.routes.login, login);
 app.use(config.routes.presentation, presentation);
 app.use(config.routes.slide, slide);
