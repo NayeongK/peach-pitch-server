@@ -1,4 +1,4 @@
-## **PEACHPITCH**
+# **PEACHPITCH**
 
 PEACHPITCH는 온라인으로 프레젠테이션을 만들고 슬라이드쇼 모드로 발표를 할 수 있는 웹 어플리케이션 입니다.
 
@@ -8,49 +8,70 @@ PEACHPITCH는 온라인으로 프레젠테이션을 만들고 슬라이드쇼 �
 <br />
 ![슬라이드 쇼 재생](https://github.com/team-dtrio/peach-pitch-client/assets/80331804/12a28bcf-4f9a-4a01-abaf-2b27f00c63f4)
 
-## **Table of Contents**
+# **Table of Contents**
 
 [Intro](#intro)
 <br />
+
 [Features](#features)
 <br />
+
 [Challenges](#challenges)
 <br />
-[1. 개체들의 좌표는 어떻게 설정하고, 크기 조절을 할 수 있을까?](#1-개체들의-좌표는-어떻게-설정하고-크기-조절을-할-수-있을까)
-<br />
-[1-1. 좌표와 크기조절을 위한 기준 : 사각형과 8개의 꼭지점](#1-1-좌표와-크기조절을-위한-기준--사각형과-8개의-꼭지점)
-<br />
-[1-2. 꼭지점마다 부여된 다른 연산방식](#1-2-꼭지점마다-부여된-다른-연산방식)
-<br/>
-[1-3. 반대 방향의 꼭지점을 고정시켜 안정적인 크기 조절 기능 구현하기](#1-3-반대-방향의-꼭지점을-고정시켜-안정적인-크기-조절-기능-구현하기)
-<br />
-[2. 슬라이드 구현하기](#2-슬라이드-구현하기)
-<br />
-[2-1. ppt 슬라이드, 도형 개체를 순수 자바스크립트로 구현하기](#2-1-ppt-슬라이드-도형-개체를-순수-자바스크립트로-구현하기)
-<br />
-[2-2. 슬라이드, 미리보기, 재생 모드 동기화하기](#2-2-ppt-애니메이션을-순수-csskeyframes로-구현하기)
-<br />
-[2-3. ppt 애니메이션을 순수 CSS(@keyframes)로 구현하기](#2-3-ppt-애니메이션을-순수-csskeyframes로-구현하기)
-<br />
-[3. 프레젠테이션 앱에 적합한 DB 구조는?](#3-프레젠테이션-앱에-적합한-db-구조는)
-<br />
-[4. 자동저장 구현하기 : 개체의 상태와 DB를 동시에 관리하기](#4-자동저장-구현하기--개체의-상태와-db를-동시에-관리하기)
-<br />
+
+- [1. 개체들의 좌표는 어떻게 설정하고, 크기 조절을 할 수 있을까?](#1-개체들의-좌표는-어떻게-설정하고-크기-조절을-할-수-있을까)
+  <br />
+
+  - [1-1. 좌표와 크기조절을 위한 기준 : 사각형과 8개의 꼭지점](#1-1-좌표와-크기조절을-위한-기준--사각형과-8개의-꼭지점)
+    <br />
+  - [1-2. 꼭지점마다 부여된 다른 연산방식](#1-2-꼭지점마다-부여된-다른-연산방식)
+    <br/>
+  - [1-3. 반대 방향의 꼭지점을 고정시켜 안정적인 크기 조절 기능 구현하기](#1-3-반대-방향의-꼭지점을-고정시켜-안정적인-크기-조절-기능-구현하기)
+    <br />
+
+- [2. 슬라이드 구현하기](#2-슬라이드-구현하기)
+  <br />
+
+  - [2-1. ppt 슬라이드, 도형 개체를 순수 자바스크립트로 구현하기](#2-1-ppt-슬라이드-도형-개체를-순수-자바스크립트로-구현하기)
+    <br />
+  - [2-2. 슬라이드, 미리보기, 재생 모드 동기화하기](#2-2-ppt-애니메이션을-순수-csskeyframes로-구현하기)
+    <br />
+  - [2-3. ppt 애니메이션을 순수 CSS(@keyframes)로 구현하기](#2-3-ppt-애니메이션을-순수-csskeyframes로-구현하기)
+    <br />
+
+- [3. 드래그 앤 드롭 인터렉션을 이용한 ppt 슬라이드 순서 변경 기능 구현](#3-드래그-앤-드롭-인터렉션을-이용한-ppt-슬라이드-순서-변경-기능-구현)
+
+- [4. 프레젠테이션 앱에 적합한 DB 구조는?](#4-프레젠테이션-앱에-적합한-db-구조는)
+  <br />
+
+- [5. 서버와 클라이언트의 상태관리: React Query와 Context API의 결합](#5-서버와-클라이언트의-상태관리-react-query와-context-api의-결합)
+  <br />
+
+  - [5-1. react query를 이용한 자동저장 구현하기](#5-1-react-query를-이용한-자동저장-구현하기--개체의-상태와-db를-동시에-관리하기)
+  - [5-2. context API의 활용 ](#5-2-context-api의-활용)
+
 [Project Timeline](#project-timeline)
 <br />
+
 [Contribution](#contribution)
 <br />
+
 [Tech stack](#tech-stack)
 <br />
+
 [Our team](#our-team)
 
-## **Intro**
+<br />
+
+# **Intro**
 
 **왜 프레젠테이션 어플리케이션인가?**
 
 저희 팀은 저희에게 도전적이며, 동시에 동적이고 시각적인 효과를 보여 줄 수 있는 프로젝트를 구현하는 것이 목표였습니다. 익숙하지만 도전적인 프레젠테이션 어플리케이션을 구현하게 되었습니다.
 
-## **Features**
+<br />
+
+# **Features**
 
 ### **내 프레젠테이션**
 
@@ -80,10 +101,12 @@ PEACHPITCH는 온라인으로 프레젠테이션을 만들고 슬라이드쇼 �
 
 - 재생버튼을 누르면 슬라이드 쇼가 재생됩니다.
 - 키보드 오른쪽 방향키를 누르면 지정된 다음 슬라이드 또는 다음 애니메이션이 순서대로 재생됩니다.
+  <br />
+  <br />
 
-## Challenges
+# Challenges
 
-### **1. 개체들의 좌표는 어떻게 설정하고, 크기 조절을 할 수 있을까?**
+## **1. 개체의 좌표는 어떻게 설정하고, 크기 조절을 할 수 있을까?**
 
 ### 1-1. 좌표와 크기조절을 위한 기준 : 사각형과 8개의 꼭지점
 
@@ -95,6 +118,7 @@ PEACHPITCH는 온라인으로 프레젠테이션을 만들고 슬라이드쇼 �
 <p align="center">
 <img width="748" alt="개체의 좌표와 크기 설정" src="https://github.com/team-dtrio/peach-pitch-client/assets/72593047/785d11dc-957c-4625-9aaf-3b7d06e8609c">
 </p>
+<br />
 
 ### 1-2. 꼭지점마다 부여된 다른 연산방식
 
@@ -109,6 +133,7 @@ PEACHPITCH는 온라인으로 프레젠테이션을 만들고 슬라이드쇼 �
 <p align="center">
 <img width="1160" alt="개체의 좌표와 크기 설정" src="https://github.com/team-dtrio/peach-pitch-client/assets/72593047/5900c3af-be64-41eb-870d-0fea2ad1fc9c">
 </p>
+<br />
 
 ### 1-3. 반대 방향의 꼭지점을 고정시켜 안정적인 크기 조절 기능 구현하기
 
@@ -244,6 +269,8 @@ width와 height는 앞서 구현했던 것 만큼 원래의 너비에서 변화�
 만약 case1, 3, 5, 7 과 같이 사각형 테두리의 모서리에 위치한 꼭지점의 경우에는 x 또는 y 좌표만 변화시킴으로써 반대편 모서리가 고정된 듯한 효과를 얻을 수 있습니다.
 
 크기의 최소값은 10으로 설정해두어, 크기가 음수 값이 나오는 경우가 없게 하고, 다시 꼭지점을 선택 할 수 있을 만큼의 최소 크기를 지정해두어 사용자 경험을 높였습니다.
+
+<br/>
 
 ## 2. 슬라이드 구현하기
 
@@ -453,6 +480,8 @@ innerText 속성을 사용해서 내용을 업데이트 하면, 레이아웃에 
 
 innerText는 텍스트 내용만을 추출하고, HTML 태그는 무시합니다. 텍스트 박스에서의 텍스트 내용만을 필요로 하기 때문에 innerHTML에 비해 더 적합하다고 판단했습니다. 또한 XSS공격을 방지할 수 있어 보안 측면에서도 유리하여 innerText로 구현했습니다.
 
+<br />
+
 ### 2-2. 슬라이드, 미리보기, 재생 모드 동기화하기
 
 **1) 각 모드에서 도형 개체를 동일한 위치와 비율로 렌더링 하기**
@@ -493,11 +522,11 @@ const BaseComponent = styled.div`
 
 - 상대적 위치 계산
 
-  BaseComponent 스타일 컴포넌트에서 left와 top 속성이 (spec.x / 900) _ 100%와 (spec.y / 600) _ 100%로 계산되어있습니다. 도형의 x, y 좌표가 캔버스 크기에 상대적인 위치로 설정됩니다.
+  BaseComponent 스타일 컴포넌트에서 left와 top 속성이 (spec.x / 900)\*100%와 (spec.y / 600)\*100%로 계산되어있습니다. 도형의 x, y 좌표가 캔버스 크기에 상대적인 위치로 설정됩니다.
 
 - 상대적 크기 계산
 
-  BaseComponent에서 width와 height 속성이 (spec.width / 900) _ 100%와 (spec.height / 600) _ 100%로 계산되어 있습니다. 도형의 크기도 캔버스 크기에 상대적인 비율로 설정됩니다.
+  BaseComponent에서 width와 height 속성이 (spec.width / 900)\*100%와 (spec.height / 600)\*100%로 계산되어 있습니다. 도형의 크기도 캔버스 크기에 상대적인 비율로 설정됩니다.
 
 이렇게 각 도형 개체의 기본 컴포넌트를 설정하고, spec을 사용해서 도형의 위치와 크기를 비율(퍼센트)로 나누는 방식을 사용해서 ppt 슬라이드, 미리보기, 슬라이드 재생 컴포넌트에서 도형이 동일한 위치와 크기로 랜더링 될 수 있습니다. 절대적인 값이 아닌 비율로 표현하기 떄문에 세가지 다양한 화면 크기에서도 동일하고 일관된 비율로 보이게 할 수 있기 때문입니다.
 
@@ -555,6 +584,9 @@ export default NonEditableObject;
 </details>
 미리보기 모드와 슬라이드 쇼 재생 모드일 때 편집이 불가능 하도록 사용자가 편집할 수 있는 기능을 비활성화 시켜둔 컴포넌트를 활용했습니다. 미리보기와 재생 모드의 역할을 수행할 수 있도록 isThumbnail로 미리보기 모드인지를 확인하고, isActive로 슬라이드 쇼 재생 여부를 확인합니다.
 
+<br />
+<br />
+
 ### 2-3. ppt 애니메이션을 순수 CSS(@keyframes)로 구현하기
 
 **1) 애니메이션이란?**
@@ -595,7 +627,91 @@ keyframes를 활용했지만, 역동감과 생동감이 부족하다는 생각�
 
 - 오른쪽 애니메이션은 cubic-bazier 함수를 이용해 프로젝트에서 block-wipe 애니메이션을 구현한 예시입니다. 시작과 끝의 속도가 중간 지점의 속도보다 느리게 이동하며, 보다 생동감있고 역동적이게 애니메이션을 표현할 수 있었습니다.
 
-## 3. 프레젠테이션 앱에 적합한 DB 구조는?
+<br />
+
+## 3. 드래그 앤 드롭을 이용한 ppt 슬라이드 순서 변경 기능 구현
+
+<img width="650" alt="image" src="https://github.com/NayeongK/objecthorizon-client/assets/80331804/42deb877-1d18-440e-8691-2db6ca7d0bd2">
+
+<br />
+HTML5의 Drag and Drop API를 이용해서, 사용자의 드래그 앤 드롭 인터렉션을 이용한 슬라이드 순서 변경 기능을 구현했습니다.
+<br />
+<br />
+
+1. **사용자의 드래그**
+   <br />
+   사용자가 드래그를 시작할 때, 드래그된 슬라이드의 id를 `event.dataTransfer.setData`를 사용해서 저장합니다. 이를 이용해서 드래그 이벤트 중에 슬라이드의 id를 전달할 수 있습니다.
+
+2. **사용자의 드래그 종료**
+   <br />
+   사용자가 드래그를 끝내고 슬라이드를 놓습니다. 이때 `event.dataTransfer.getData`를 사용하여 드래그가 시작된 슬라이드의 id(droppedSlideId)를 가져옵니다. 그리고 슬라이드가 놓여진 위치에 있는 타겟 슬라이드의 id(targetSlideId)도 같이 사용됩니다.
+
+3. **슬라이드 배열 순서 변경**
+   <br />
+   `현재 슬라이드 배열`, 드래그된 슬라이드 id(`droppedSlideId`), 타겟 슬라이드 id(`targetSlideId`)로 변경된 순서의 슬라이드 배열을 생성합니다.
+   드래그된 슬라이드를 제거하고, 타겟 슬라이드 위치에 삽입하여 순서를 변경합니다.
+
+4. **서버에 순서 변경 요청**
+   <br />
+   새로운 슬라이드 순서로 변경이 되면, useUpdateSlideOrderMutation 훅을 사용하여 변경된 순서를 서버에 비동기적으로 업데이트 요청합니다. 서버에서는 변경된 슬라이드의 순서로 db에 변경된 순서로 슬라이드를 저장하고 클라이언트에 응답을 보냅니다. 이 요청이 성공하면, `queryClient.invalidateQueries`를 호출하여 쿼리를 무효화시킵니다.
+
+5. **리렌더링**
+   <br />
+   React-Query의 refetch로 인해 컴포넌트가 자동적으로 리랜더링 됩니다.
+   서버에 업데이트 요청이 완료되면, queryClient.invalidateQueries에 의해 slides 관련 쿼리가 무효화됩니다. 이는 useQuery 훅이 관리하는 slides 데이터에 변화가 생겼음을 알리며, React Query는 자동으로 이 데이터를 다시 가져옵니다 (`refetch`).
+   새로운 데이터가 도착하면, 이는 컴포넌트에 반영되어 변경된 슬라이드 순서로 화면이 자동으로 리렌더링 됩니다.
+
+<details>
+<summary>해당 코드</summary>
+
+```javascript
+function updateSlideOrder(currentSlides, droppedSlideId, targetSlideId) {
+  const droppedIndex = currentSlides.findIndex(
+    slide => slide._id === droppedSlideId,
+  );
+  const targetIndex = currentSlides.findIndex(
+    slide => slide._id === targetSlideId,
+  );
+
+  const newSlides = [...currentSlides];
+  const [removed] = newSlides.splice(droppedIndex, 1);
+  newSlides.splice(targetIndex, 0, removed);
+
+  return newSlides;
+}
+
+function handleDragStart(event, id) {
+  event.dataTransfer.setData("text/plain", id);
+}
+
+function handleDragOver(event) {
+  event.preventDefault();
+}
+
+async function handleDrop(event, id) {
+  event.preventDefault();
+
+  const droppedSlideId = event.dataTransfer.getData("text/plain");
+  const targetSlideId = id;
+
+  const newSlides = updateSlideOrder(
+    slidesState,
+    droppedSlideId,
+    targetSlideId,
+  );
+
+  const newOrder = newSlides.map(slide => slide._id);
+
+  await useUpdateSlideOrderMutation.mutateAsync({ newOrder });
+}
+```
+
+<br />
+</details>
+
+<br />
+
+## 4. 프레젠테이션 앱에 적합한 DB 구조는?
 
 프레젠테이션 앱을 구성하고 있는 가장 기본적인 형태는 프레젠테이션, 슬라이드, 그리고 슬라이드 속의 객체들, 그리고 객체들이 갖게 될 개별적인 애니메이션 효과들입니다. 위의 모든 요소들이 DB에 저장되어야하고, 기존에 이용되고 있는 프레젠테이션 어플리케이션와 같이 계층적 구조를 가져야 한다고 판단했습니다.
 
@@ -651,18 +767,50 @@ MongoDB의 document당 16MB 용량제한과 관련해서는, 이미지는 amazon
 
 임베디드 방식을 이용해서, 계층적인 관계를 가지고 있게 되었고, 각각의 데이터구조를 불러오기, 만들기, 삭제하기 적합한 데이터베이스 구조를 갖게 되었습니다.
 
-## 4. 자동저장 구현하기 : 개체의 상태와 DB를 동시에 관리하기
+<br />
+
+## 5. 서버와 클라이언트의 상태관리: React Query와 Context API의 결합
+
+### 5-1. React Query를 이용한 자동저장 구현하기 : 개체의 상태와 DB를 동시에 관리하기
 
 **1) React query 의 활용**
 <br/>
-이 프로젝트의 핵심적인 기능 중 하나는 서버 데이터와 클라이언트 상태와 실시간 동기화가 필요하다는 점이였습니다. 프레젠테이션, 슬라이드, 개체, 애니메이션이 추가/수정/삭제 될 때 마다, DB도 업데이트 되어야 하고 자동저장 되는 구조여야만 온라인 프레젠테이션 어플리케이션으로서의 역할을 할 수 있다고 판단했습니다.
+이 프로젝트의 핵심적인 기능 중 하나는 서버 데이터와 클라이언트 상태를 실시간으로 동기화하는 것입니다. 프레젠테이션, 슬라이드, 개체, 애니메이션이 추가, 수정, 삭제될 때마다 DB도 업데이트 되고 자동저장 되어야 하는 구조가 필요합니다.
 
-가장 먼저 고민했던 것은 Redux를 이용해서 store로 전역 상태를 관리하면서, fetch를 이용해서 서버와 통신하는 방법이었습니다. 하지만 이 방법을 사용할 경우 자동저장이 빈번한 프레젠테이션 어플리케이션 특성상 비동기 작업으로 인해 Redux store가 비대해질 것이라고 판단했습니다
+초기에는 Redux를 사용하여 전역 상태를 관리하고 fetch로 서버와 통신하는 방식을 고려했습니다. 하지만, 이 방법은 프레젠테이션 애플리케이션의 자동저장이 빈번한 특성을 고려할 때, 비동기 작업으로 인해 Redux store가 비대해질 가능성이 있었습니다.
 
-이렇게 서버와 많은 통신을 하게되는 경우 Server Side State를 사용하는 것이 가장 적합하다는 생각이 들어 `React query`를 사용하게 되었습니다.
+따라서, 서버와 빈번한 통신이 필요한 경우 Server Side State를 효과적으로 관리하는 것이 중요하다고 판단하여 `React Query`를 사용하기로 결정했습니다.
 
-**2) Context API의 활용**
 <br />
+
+**2) React Query의 장점**
+<br/>
+React Query는 아래와 같은 장점이 있습니다.
+
+| 장점                          | 설명                                                                                                                                                                                               |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 서버 상태 관리                | React Query는 서버 상태(데이터)를 캐시하여 관리합니다. <br />이를 통해 불필요한 네트워크 요청을 줄이고, 반응성을 향상시킵니다.                                                                     |
+| 자동 데이터 동기화            | 데이터가 변경될 때 `invalidateQueries` 메소드를 통해 쿼리를 무효화하고 자동으로 재요청(refetch)합니다.<br />이 장점으로 인해 데이터가 항상 최신 상태로 유지될 수 있고, 자동으로 화면에 반영됩니다. |
+| 에러 핸들링 및 로딩 상태 관리 | React Query는 데이터 로딩 및 에러 핸들링을 쉽게 관리할 수 있는 인터페이스가 있어, <br />에러 핸들링과 로딩 상태를 다루기 편리합니다.                                                               |
+
+<br/>
+
+**3) 자동저장 로직의 구현**
+<br/>
+React Query를 사용하여 자동저장 로직을 구현하는 과정은 아래의 순서와 같습니다.
+
+- 사용자가 프레젠테이션, 슬라이드, 개체 등을 수정할 때, 해당 변경 사항은 즉시 mutation 훅을 통해 서버에 전송됩니다.
+
+- 수정이 성공적으로 서버에 반영되면, onSuccess 콜백에서 invalidateQueries를 호출하여 관련 쿼리를 무효화시킵니다.
+
+- React Query는 변경된 데이터에 대해 자동으로 새로운 요청을 보내고, 이 데이터는 클라이언트의 UI에 반영됩니다.
+
+이러한 방식으로 React Query를 활용하면, 서버와 클라이언트 간의 데이터 동기화를 효율적으로 관리할 수 있으며, 사용자 경험을 개선하면서 자동저장 기능을 효과적으로 구현할 수 있습니다.
+
+<br />
+
+### 5-2. Context API의 활용
+
 위와 같이 react query를 이용하여 각 개체들의 상태와 서버데이터를 동기화 할 수 있었으나, 클라이언트측에서 별도로 상태를 관리해야 할 필요성이 생겨서 Context API를 이용하였습니다.
 
 ```javascript
@@ -708,7 +856,9 @@ useMemo 사용
 <br />
 Context의 value는 useMemo를 사용하여 메모이제이션되어, 의존성 배열 내의 값이 변경되지 않을 시 동일한 객체를 참조하도록 했습니다. 컴포넌트들이 불필요하게 리렌더링되는 것을 방지할 수 있었습니다.
 
-## **Project Timeline**
+<br />
+
+# **Project Timeline**
 
 <details>
 <summary>프로젝트 기간 : 2023.07.10 ~ 2023.08.04 (총 25일, 기획 및 설계 10일, 개발 및 마무리 15일)</summary>
@@ -732,7 +882,9 @@ Context의 value는 useMemo를 사용하여 메모이제이션되어, 의존성 
 - 배포
 </details>
 
-## Contribution
+<br />
+
+# Contribution
 
 **클라이언트 (컴포넌트별)**
 
@@ -760,7 +912,9 @@ Context의 value는 useMemo를 사용하여 메모이제이션되어, 의존성 
 - 개체, 슬라이드, 프레젠테이션 추가,수정,삭제 : 김정우
 - DB Schema : 김정우, 문형석, 곽나영 공동작업
 
-## **Tech Stack**
+<br />
+
+# **Tech Stack**
 
 **Client**:
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
@@ -781,7 +935,9 @@ Context의 value는 useMemo를 사용하여 메모이제이션되어, 의존성 
 <img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=Netlify&logoColor=white">
 <img src="https://img.shields.io/badge/AWS Elastic Beanstalk-FF9900?style=for-the-badge&logo=&logoColor=white">
 
-## **Our Team**
+<br/>
+
+# **Our Team**
 
 - 문형석 : [hyn9xc@gmail.com](mailto:hyn9xc@gmail.com)
 - 곽나영 : [nayeongKwak.dev@gmail.com](mailto:nayeongKwak.dev@gmail.com)

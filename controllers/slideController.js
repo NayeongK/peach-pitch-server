@@ -111,7 +111,7 @@ async function updateSlides(req, res, next) {
 
     await presentation.save();
 
-    res.json({ result: "success", message: "Slide successfully deleted" });
+    res.json({ result: "success", message: "Slide successfully updated" });
   } catch (err) {
     next(err);
   }
